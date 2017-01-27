@@ -1,0 +1,7 @@
+---
+applications:
+- name: minimal-spray
+  memory: 1G
+  random-route: true
+  path: target/scala-2.11/minimal-spray-assembly-0.1-SNAPSHOT.jar
+  buildpack: java-buildpack-offline_new
