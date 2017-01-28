@@ -25,17 +25,10 @@ import util.Properties
 
 
 object Main {
-
-  val config = ConfigFactory.load()
-  val staticPath = config.getString("geotrellis.server.static-path")
-  val myhost = Properties.envOrElse("CF_INSTANCE_IP", "0.0.0.0")
-  val port =
-    if (config.hasPath("geotrellis.port"))
-      config.getInt("geotrellis.port")
-    else
-      8777
-
-  val host = config.getString("geotrellis.hostname")
+  //val host = Properties.envOrElse("CF_INSTANCE_IP", "0.0.0.0")
+  val host = "0.0.0.0"
+  val port = Properties.envOrElse("PORT", "8080").toInt
+  println(s"host: $host, port: $port")
 
   def main(args: Array[String]): Unit = {
 
@@ -43,11 +36,10 @@ object Main {
 
     // create and start our service actor
     val service = {
-      val actorProps = Props(classOf[WeightedServiceActor], staticPath)
+      val actorProps = Props(classOf[WeightedServiceActor])
       system.actorOf(actorProps, "weighted-service")
     }
 
-    // start a new HTTP server on port 8080 with our service actor as the handler
-    IO(Http) ! Http.Bind(service, myhost, port)
+    IO(Http) ! Http.Bind(service, host, port)
   }
 }

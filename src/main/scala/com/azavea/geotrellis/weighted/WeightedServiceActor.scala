@@ -24,7 +24,7 @@ import spray.routing._
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
 
-class WeightedServiceActor(staticPath: String)
+class WeightedServiceActor
     extends Actor
     with HttpService {
   override def actorRefFactory = context
